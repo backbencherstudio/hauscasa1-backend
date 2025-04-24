@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import { getImageUrl } from "../../utils/base_utl";
 import { generateReferenceCode } from "../../utils/generateReferenceCode";
 import QRCode from 'qrcode';
+import fs from 'fs';
+import path from 'path';
 
 const prisma = new PrismaClient();
 
@@ -120,11 +122,23 @@ export const deleteApplication = async (req: Request, res: Response) => {
     });
 
     if (!post) {
-       res.status(404).json({
+      res.status(404).json({
         success: false,
         message: "Application not found",
       });
-      return
+      return;
+    }
+
+    // Delete the file if it exists
+    if (post.file) {
+      const filePath = path.join(__dirname, '../../uploads', post.file);
+      try {
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      } catch (unlinkError) {
+        console.error("Error deleting file:", unlinkError);
+      }
     }
 
     await prisma.post.delete({
