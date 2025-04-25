@@ -1,10 +1,13 @@
 import express, { Request, Response, NextFunction, application } from "express";
 import cors from "cors";
 import morgan from "morgan";
+import helmet from "helmet";
 
 import path from "path";
 import createApplication from "./module/secure-application/application.routes"
 const app = express();
+
+app.use(helmet());
 
 app.use(
   cors({
@@ -21,7 +24,7 @@ app.use(
       "http://192.168.30.102:*",
       "http://localhost:3002",
       "http://192.168.40.10:4000",
-      "https://aymeecel-client.vercel.app"
+      "https://hauscasa.vercel.app",
     ],
   })
 );
@@ -30,7 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.use("/applocation", createApplication)
+app.use("/application", createApplication)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
