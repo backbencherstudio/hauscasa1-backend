@@ -2,12 +2,16 @@ import express, { Request, Response, NextFunction, application } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
+import compression from 'compression';
+
+
 
 import path from "path";
 import createApplication from "./module/secure-application/application.routes"
 const app = express();
 
 app.use(helmet());
+app.use(compression());
 
 app.use(
   cors({
