@@ -12,14 +12,16 @@ const app = express();
 
 app.use(helmet());
 app.use(compression());
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
 app.use(
   cors({
     origin: [
       "http://192.168.30.102:3000",
       "http://192.168.30.102:*",
-      "http://localhost:3000",
-      "http://localhost:3001",
+      "http://192.168.4.30:3000",
+      "http://192.168.4.30:3001",
       "http://localhost:*",
       'http://192.168.30.102:3000',
       "http://192.168.30.102:3001",
